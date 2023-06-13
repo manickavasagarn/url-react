@@ -1,5 +1,8 @@
 import React from 'react'
-
+function handlelogout(){
+    window.localStorage.setItem("token",null);
+    window.location.href="/login";
+}
 function TopBar() {
   return (
     <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
@@ -52,12 +55,14 @@ function TopBar() {
 
     
         <li class="nav-item dropdown no-arrow mx-1">
-            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+            {/* <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
           
                 <span class="badge badge-danger badge-counter">3+</span>
-            </a>
+            </a> */}
+            <div className='nav-link dropdown-toggle'>
+            <i class="fa fa-power-off" aria-hidden="true" onClick={()=>handlelogout()}></i></div>
           
             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                 aria-labelledby="alertsDropdown">

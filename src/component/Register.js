@@ -1,40 +1,66 @@
 import { useFormik } from "formik";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Otp from "./Otp";
-const validate = (values) => {
-  const errors = {};
-
-  if (!values.firstname) {
-    errors.firstname = "Required";
-  } else if (values.firstname.length > 15) {
-    errors.firstname = "less then 15 characters";
-  }
-
-  if (!values.lastname) {
-    errors.lastname = "Required";
-  } else if (values.lastname.length > 25) {
-    errors.lastname = "less then 25 characters";
-  }
-
-  if (!values.email) {
-    errors.email = "Required";
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = "Invalid email address";
-  }
-
-  if (!values.password) {
-    errors.password = "Required";
-  } else if (!values.conform) {
-    errors.conform = "Required";
-  } else if (values.password != values.conform) {
-    errors.password = "Please Check The Conform Password";
-  }
-  return errors;
-};
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Register() {
-  const [otpPage, setOtpPage] = useState(false);
+
+  const [user, setuser] = useState([]);
+  
+ 
+   useEffect(() => {
+     
+   
+     return async () => {
+      try {
+        var userlist = await axios.get("http://localhost:3001/register");
+        setuser([...userlist.data]);
+      } catch (error) {
+        console.log(error)
+      }
+     }
+   }, [])
+   
+
+  const validate = (values) => {
+    const errors = {};
+  
+    if (!values.firstname) {
+      errors.firstname = "Required";
+    } else if (values.firstname.length > 15) {
+      errors.firstname = "less then 15 characters";
+    }
+  
+    if (!values.lastname) {
+      errors.lastname = "Required";
+    } else if (values.lastname.length > 25) {
+      errors.lastname = "less then 25 characters";
+    }
+  
+    if (!values.email) {
+      errors.email = "Required";
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+      errors.email = "Invalid email address";
+    }else {
+      user.map((obj)=>{
+        if(obj.email==values.email){
+          errors.email="Mail already used!"
+        }
+       })
+    }
+  
+    if (!values.password) {
+      errors.password = "Required";
+    } else if (!values.conform) {
+      errors.conform = "Required";
+    } else if (values.password != values.conform) {
+      errors.password = "Passwords doesn't match";
+    }
+  
+    return errors;
+  };
+  
+
   const nav = useNavigate();
   const formik = useFormik({
     initialValues: {
@@ -45,16 +71,16 @@ function Register() {
       conform: "",
     },
     validate,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       delete values.conform;
-      //   alert(JSON.stringify(values, null, 2));
-      setOtpPage(values);
-    //   nav("/otp");
+      await axios.post("http://localhost:3001/register",values);
+  
+       nav("/login");
     },
   });
   return (
     <div className="bg-gradient-primary" style={{ "min-height": "100vh" }}>
-      {!otpPage ? (
+      
         <div className="container ">
           <div class="row">
             <div className="col-lg-3"></div>
@@ -163,9 +189,9 @@ function Register() {
                     <hr />
 
                     <div class="text-center">
-                      <a class="small" href="login.html">
+                      <Link class="small" to="/login">
                         Already have an account? Login!
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -173,9 +199,7 @@ function Register() {
             </div>
           </div>
         </div>
-      ) : (
-        <Otp otp={otpPage} ok="oktha" />
-      )}
+     
     </div>
   );
 }
