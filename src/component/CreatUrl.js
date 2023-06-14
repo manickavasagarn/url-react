@@ -20,21 +20,25 @@ const validate = (values) => {
 };
 function CreatUrl() {
   const nav = useNavigate();
-  useEffect(async () => {
-    
+  useEffect(() => {
+    async function check() {
       try {
         console.log(window.localStorage.getItem("token"));
-        var valid = await axios.get("https://url-node.onrender.com/tokencheck", {
-          headers: {
-            Authorization: window.localStorage.getItem("token"),
-          },
-        });
+        var valid = await axios.get(
+          "https://url-node.onrender.com/tokencheck",
+          {
+            headers: {
+              Authorization: window.localStorage.getItem("token"),
+            },
+          }
+        );
       } catch (error) {
         window.localStorage.setItem("token", null);
         window.localStorage.setItem("email", null);
         nav("/login");
       }
-    
+    }
+    check();
   }, []);
   const formik = useFormik({
     initialValues: {
@@ -43,18 +47,18 @@ function CreatUrl() {
     },
     validate,
     onSubmit: async (values) => {
-       try {
+      try {
         values.email = window.localStorage.getItem("email");
-        await axios.post("https://url-node.onrender.com/urlshort",values,{
-            headers:{
-                "Authorization":window.localStorage.getItem("token")
-            }
+        await axios.post("https://url-node.onrender.com/urlshort", values, {
+          headers: {
+            Authorization: window.localStorage.getItem("token"),
+          },
         });
-        console.log(values)
+        console.log(values);
         nav("/");
-       } catch (error) {
-         nav("/login");
-       }
+      } catch (error) {
+        nav("/login");
+      }
     },
   });
   return (

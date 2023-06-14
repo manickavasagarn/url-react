@@ -20,22 +20,27 @@ const validate = (values) => {
   return errors;
 };
 function Login() {
-  useEffect(async() => {
+  useEffect(() => {
+    async function check() {
       if (window.localStorage.getItem("token")) {
         try {
           console.log(window.localStorage.getItem("token"));
-          var valid = await axios.get("https://url-node.onrender.com/tokencheck", {
-            headers: {
-              Authorization: window.localStorage.getItem("token"),
-            },
-          });
+          var valid = await axios.get(
+            "https://url-node.onrender.com/tokencheck",
+            {
+              headers: {
+                Authorization: window.localStorage.getItem("token"),
+              },
+            }
+          );
           nav("/");
         } catch (error) {
           window.localStorage.setItem("token", null);
           window.localStorage.setItem("email", null);
         }
       }
-
+    }
+    check();
   }, []);
   const nav = useNavigate();
   const [error, seterror] = useState(null);
@@ -47,7 +52,10 @@ function Login() {
     validate,
     onSubmit: async (values) => {
       try {
-        var data = await axios.post("https://url-node.onrender.com/login", values);
+        var data = await axios.post(
+          "https://url-node.onrender.com/login",
+          values
+        );
         window.localStorage.setItem("token", data.data.token);
         window.localStorage.setItem("email", data.data.email);
         nav("/");
