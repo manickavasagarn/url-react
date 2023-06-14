@@ -13,7 +13,7 @@ function Register() {
    
      return async () => {
       try {
-        var userlist = await axios.get("http://localhost:3001/register");
+        var userlist = await axios.get("https://url-node.onrender.com/register");
         setuser([...userlist.data]);
       } catch (error) {
         console.log(error)
@@ -73,7 +73,7 @@ function Register() {
     validate,
     onSubmit: async (values) => {
       delete values.conform;
-      await axios.post("http://localhost:3001/register",values);
+      await axios.post("https://url-node.onrender.com/register",values);
   
        nav("/login");
     },

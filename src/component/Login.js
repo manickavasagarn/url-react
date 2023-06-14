@@ -25,7 +25,7 @@ function Login() {
       if (window.localStorage.getItem("token")) {
         try {
           console.log(window.localStorage.getItem("token"));
-          var valid = await axios.get("http://localhost:3001/urlshort", {
+          var valid = await axios.get("https://url-node.onrender.com/tokencheck", {
             headers: {
               Authorization: window.localStorage.getItem("token"),
             },
@@ -33,6 +33,7 @@ function Login() {
           nav("/");
         } catch (error) {
           window.localStorage.setItem("token", null);
+          window.localStorage.setItem("email", null);
         }
       }
     };
@@ -47,8 +48,9 @@ function Login() {
     validate,
     onSubmit: async (values) => {
       try {
-        var data = await axios.post("http://localhost:3001/login", values);
+        var data = await axios.post("https://url-node.onrender.com/login", values);
         window.localStorage.setItem("token", data.data.token);
+        window.localStorage.setItem("email", data.data.email);
         nav("/");
       } catch (error) {
         seterror(error.response.data.message);
@@ -69,7 +71,7 @@ function Login() {
                     <div class="p-5">
                       <div class="text-center">
                         <h1 class="h4 text-gray-900 mb-4">
-                          Welcome Back To Data Aces URL Shortener
+                          URL Shortener Login
                         </h1>
                       </div>
                       <div className="text-danger">{error}</div>
