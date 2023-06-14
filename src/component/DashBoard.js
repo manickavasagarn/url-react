@@ -7,8 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 function DashBoard() {
   const nav = useNavigate();
   const [url, seturl] = useState([]);
-  useEffect(() => {
-    return async () => {
+  useEffect(async() => {
       try {
         var valid = await axios.get("https://url-node.onrender.com/tokencheck", {
           headers: {
@@ -30,7 +29,7 @@ function DashBoard() {
         window.localStorage.setItem("email", null);
         nav("/login");
       }
-    };
+
   }, []);
 
   return (

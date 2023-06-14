@@ -12,10 +12,7 @@ function Otp(props) {
       alert(JSON.stringify(values, null, 2));
     },
   });
-  useEffect(() => {
-    console.log(props);
-    console.log("otp page")
-  }, []);
+
 
   return (
     <div className="bg-gradient-primary" style={{ "min-height": "100vh" }}>

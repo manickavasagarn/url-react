@@ -20,8 +20,7 @@ const validate = (values) => {
   return errors;
 };
 function Login() {
-  useEffect(() => {
-    return async () => {
+  useEffect(async() => {
       if (window.localStorage.getItem("token")) {
         try {
           console.log(window.localStorage.getItem("token"));
@@ -36,7 +35,7 @@ function Login() {
           window.localStorage.setItem("email", null);
         }
       }
-    };
+
   }, []);
   const nav = useNavigate();
   const [error, seterror] = useState(null);

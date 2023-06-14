@@ -20,8 +20,8 @@ const validate = (values) => {
 };
 function CreatUrl() {
   const nav = useNavigate();
-  useEffect(() => {
-    return async () => {
+  useEffect(async () => {
+    
       try {
         console.log(window.localStorage.getItem("token"));
         var valid = await axios.get("https://url-node.onrender.com/tokencheck", {
@@ -34,7 +34,7 @@ function CreatUrl() {
         window.localStorage.setItem("email", null);
         nav("/login");
       }
-    };
+    
   }, []);
   const formik = useFormik({
     initialValues: {

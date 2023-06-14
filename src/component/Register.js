@@ -8,17 +8,16 @@ function Register() {
   const [user, setuser] = useState([]);
   
  
-   useEffect(() => {
+   useEffect(async() => {
      
    
-     return async () => {
       try {
         var userlist = await axios.get("https://url-node.onrender.com/register");
         setuser([...userlist.data]);
       } catch (error) {
         console.log(error)
       }
-     }
+     
    }, [])
    
 
